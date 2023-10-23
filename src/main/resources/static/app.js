@@ -15,6 +15,7 @@ var app = (function () {
         ctx.beginPath();
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
+
     };
     
     
@@ -28,7 +29,8 @@ var app = (function () {
     };
 
 
-    var connectAndSubscribe = function () {
+    //var connectAndSubscribe = function () {
+    var connectAndSubscribe = function (callback) {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
@@ -36,8 +38,11 @@ var app = (function () {
         //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/TOPICXX', function (eventbody) {
-                
+            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+
+                let theObject = JSON.parse(eventbody.body);
+
+                callback(`Nuevo punto en: ${theObject.x}, ${theObject.y}`);
                 
             });
         });
@@ -52,7 +57,7 @@ var app = (function () {
             var can = document.getElementById("canvas");
             
             //websocket connection
-            connectAndSubscribe();
+            connectAndSubscribe(alert);
         },
 
         publishPoint: function(px,py){
@@ -61,6 +66,7 @@ var app = (function () {
             addPointToCanvas(pt);
 
             //publicar el evento
+            stompClient.send("/topic/newpoint", {}, JSON.stringify(pt));
         },
 
         disconnect: function () {
