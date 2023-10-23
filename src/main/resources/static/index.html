@@ -29,10 +29,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
-    <body onload="app.init()">
+    <body>
         X:<input id="x" type="number"/>
         Y:<input id="y" type="number"/>
-        <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
+        <button onclick="app.publishPoint($('#x').val(),$('#y').val(), $('#lobby').val())">Send point</button>
+        <label for="lobby">Nombre del Lobby: </label>
+        <input id="lobby" type="text">
+        <button onclick="app.connect($('#lobby').val())">conectarse</button>
         <canvas id="canvas" width="800" height="600" style="border:1px solid #000000;"></canvas>
     </body>
 </html>
