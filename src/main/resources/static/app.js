@@ -42,7 +42,7 @@ var app = (function () {
 
                 let theObject = JSON.parse(eventbody.body);
 
-                callback(`Nuevo punto en: ${theObject.x}, ${theObject.y}`);
+                callback(theObject);
                 
             });
         });
@@ -57,7 +57,7 @@ var app = (function () {
             var can = document.getElementById("canvas");
             
             //websocket connection
-            connectAndSubscribe(alert);
+            connectAndSubscribe(addPointToCanvas);
         },
 
         publishPoint: function(px,py){
