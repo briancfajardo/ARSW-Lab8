@@ -59,16 +59,18 @@ var app = (function () {
                 callbackPolygon(theObject);
             });
         });
-
     };
-    
-    
 
     return {
 
         connect: function (val) {
-            var can = document.getElementById("canvas");
-            
+            let can = document.getElementById("canvas");
+            can.addEventListener("click", function(evt) {
+                let mousePosition = getMousePosition(evt);
+                console.log(mousePosition);
+                app.publishPoint(mousePosition.x, mousePosition.y, val);
+            });
+
             //websocket connection
             connectAndSubscribe(addPointToCanvas, drawPolygon, val);
         },
